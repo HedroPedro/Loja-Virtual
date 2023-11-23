@@ -2,6 +2,8 @@ package com.proj.loja.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import com.proj.loja.repository.UsuarioRepository;
 public class UsuarioServiceImpl implements UsuarioService{
     @Autowired
     private UsuarioRepository repository;
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public List<Usuario> getUsuarios(){
@@ -38,33 +42,47 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
 
         String CPFRecortado[] = CPF.split("\\D");
-        String CPFFormatado = CPFRecortado[0] + CPFRecortado[1] + CPFRecortado[2];
-        
+        String CPFFormatado = "";
+        for(String s : CPFRecortado){
+            CPFFormatado = CPFFormatado + s;
+        }
+
         int firstNumber = Integer.valueOf(String.valueOf(CPFFormatado.charAt(0)));
-        int lastFirstNumber = Integer.valueOf(String.valueOf(CPFRecortado[2].charAt(0)));
-        int lastSecondNumber = Integer.valueOf(String.valueOf(CPFRecortado[2].charAt(1)));
-        int sum = 0;
+        int lastFirstNumber = Integer.parseInt(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-2)));
+        int lastSecondNumber = Integer.parseInt(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-1)));
+        int sum = 0, modifer = 10;
+        
         for(int i = 0; i < CPFFormatado.length(); i++)
             sum += Integer.valueOf(String.valueOf(CPFFormatado.charAt(i)));
+        
         if(sum == (firstNumber*11)){
             return false;
         }
         
         sum = 0; 
         for(int i = 0; i < CPFFormatado.length()-2; i++){
-            sum += Integer.valueOf(String.valueOf(CPFFormatado.charAt(i))) * i+1;           
+            sum += modifer * Integer.valueOf(String.valueOf(CPFFormatado.charAt(i)));           
+            modifer--;
         }
-        if((sum % 11) != lastFirstNumber){
 
-            return false;
+        logger.info(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-2)));
+        if(((sum*10) % 11) != lastFirstNumber){
+            if((sum % 11) != 0){
+                return false;
+            }
         }
 
         sum = 0;
+        modifer = 11;
         for(int i = 0; i < CPFFormatado.length()-1; i++){
-            sum += Integer.valueOf(String.valueOf(CPFFormatado.charAt(i))) * i;           
+            sum += Integer.valueOf(String.valueOf(CPFFormatado.charAt(i))) * i;
+            modifer--;           
         }
-        if((sum % 11) != lastSecondNumber){
-            return false;
+
+        if(((sum*10) % 11) != lastSecondNumber){
+            if((sum % 11) != 0){
+                return false;
+            }
         }
 
         return true;
