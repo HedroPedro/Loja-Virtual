@@ -28,11 +28,12 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public boolean addUsuario(Usuario usuario) {
+    public Usuario addUsuario(Usuario usuario) {
         if(!isCPFCorreto(usuario.getCPF()))
-            return false;
+            return null;
 
-        return true;
+        Usuario usuarioSaved = repository.save(usuario);
+        return usuarioSaved;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 
         logger.info(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-2)));
         if(((sum*10) % 11) != lastFirstNumber){
-            if((sum % 11) != 0){
+            if((sum*10 % 11) != 10){
                 return false;
             }
         }
@@ -80,7 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
 
         if(((sum*10) % 11) != lastSecondNumber){
-            if((sum % 11) != 0){
+            if((sum*10 % 11) != 10){
                 return false;
             }
         }

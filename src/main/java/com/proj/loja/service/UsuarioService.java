@@ -9,7 +9,7 @@ public interface UsuarioService {
 
     Usuario getUsuarioById(long id);
 
-    boolean addUsuario(Usuario usuario);
+    Usuario addUsuario(Usuario usuario);
 
     boolean isCPFCorreto(String CPF);
 }
