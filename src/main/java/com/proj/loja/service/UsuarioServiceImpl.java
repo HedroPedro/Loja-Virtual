@@ -2,8 +2,6 @@ package com.proj.loja.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +12,6 @@ import com.proj.loja.repository.UsuarioRepository;
 public class UsuarioServiceImpl implements UsuarioService{
     @Autowired
     private UsuarioRepository repository;
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public List<Usuario> getUsuarios(){
@@ -66,7 +62,6 @@ public class UsuarioServiceImpl implements UsuarioService{
             modifer--;
         }
 
-        logger.info(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-2)));
         if(((sum*10) % 11) != lastFirstNumber){
             if((sum*10 % 11) != 10){
                 return false;
@@ -87,6 +82,15 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
 
         return true;
+    }
+
+    @Override
+    public boolean isEmailInUseOrInvalid(String email) {
+        if(repository.existsByEmail(email) || 
+        email.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")) 
+            return true;
+
+        return false;
     }
 
 }
