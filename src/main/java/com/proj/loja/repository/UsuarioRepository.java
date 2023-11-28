@@ -10,4 +10,6 @@ import com.proj.loja.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     Optional<Usuario> findByName(String name);
+
+    boolean existsByEmail(String email);
 }

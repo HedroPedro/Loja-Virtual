@@ -12,4 +12,6 @@ public interface UsuarioService {
     Usuario addUsuario(Usuario usuario);
 
     boolean isCPFCorreto(String CPF);
+
+    boolean isEmailInUseOrInvalid(String email);
 }
