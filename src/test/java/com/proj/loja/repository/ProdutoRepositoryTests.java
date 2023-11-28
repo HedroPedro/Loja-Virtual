@@ -42,7 +42,7 @@ public class ProdutoRepositoryTests {
 
     @BeforeEach
     public void setUp(){
-        produto = new Produto(Long.valueOf(0), "Alvejante", 2.5f, 10);
+        produto = new Produto(null, "Alvejante", 2.5f, 10);
         entityManager.persistAndFlush(produto);
     }
 
