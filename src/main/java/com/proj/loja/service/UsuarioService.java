@@ -11,7 +11,13 @@ public interface UsuarioService {
 
     Usuario addUsuario(Usuario usuario);
 
-    boolean isCPFCorreto(String CPF);
+    void deleteUsuario(Long id);
+
+    boolean isCPFCorreto(String cpf);
+
+    public boolean isCPFInUse(String cpf);
 
     boolean isEmailInUseOrInvalid(String email);
+
+    Usuario updateUsuario(Usuario usuario);
 }

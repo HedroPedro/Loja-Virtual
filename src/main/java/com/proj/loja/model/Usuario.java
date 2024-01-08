@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Usuario{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
@@ -30,4 +30,5 @@ public class Usuario {
     private String senha;
     @Column(unique = true)
     private String CPF;
+    private String salt;
 }

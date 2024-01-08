@@ -36,7 +36,7 @@ public class UserRepositoryTests { //Tentar fazer isso depois :), estou coringan
 
     @BeforeEach
     public void setUp(){
-        usuario = new Usuario(null, null, "Test", "email@email.com", "password", "333333-33");
+        usuario = new Usuario(null, null, "Test", "email@email.com", "password", "333333-33", "abc");
         entityManager.persistAndFlush(usuario);
     }
 
