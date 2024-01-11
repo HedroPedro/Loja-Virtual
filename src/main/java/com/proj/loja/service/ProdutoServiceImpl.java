@@ -25,12 +25,12 @@ public class ProdutoServiceImpl implements ProdutoService{
     }
 
     @Override
-    public void deleteProduto(Long id) {
+    public void deleteProduto(Long id){
         repository.deleteById(id);
     }
 
     @Override
-    public Produto updateProduto(Produto produtoUpdated) {
+    public Produto updateProduto(Produto produtoUpdated){
         Produto prod = repository.findById(produtoUpdated.getId()).orElse(null);
         if(prod == null)
             return null;
@@ -41,7 +41,7 @@ public class ProdutoServiceImpl implements ProdutoService{
     }
 
     @Override
-    public List<Produto> getProdutos() {
+    public List<Produto> getProdutos(){
         return repository.findAll();
     }
     

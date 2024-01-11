@@ -142,6 +142,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         return usuarioToBeUpdated;
     }
 
+    @Override
     public void hashSenha(Usuario usuario){
         byte[] newSalt = new byte[16];
         secureRandom.nextBytes(newSalt);
