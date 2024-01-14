@@ -22,7 +22,6 @@ import com.proj.loja.service.ProdutoServiceImpl;
 import com.proj.loja.service.UsuarioServiceImpl;
 
 @RestController
-
 public class Controller {
     @Autowired
     private UsuarioServiceImpl usuarioService;
@@ -33,9 +32,7 @@ public class Controller {
     @GetMapping(path = "/usuario")
     public ResponseEntity<List<Usuario>> getUsuarios(){
         return ResponseEntity.ok(usuarioService.getUsuarios());
-    }
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class); 
+    } 
 
     @PostMapping(path = "/usuario")
     public ResponseEntity addUsuario(@RequestBody Usuario usuario){
@@ -50,8 +47,8 @@ public class Controller {
         return ResponseEntity.ok(usuario);
     }
 
-    @DeleteMapping(path = "/usuario")
-    public ResponseEntity deleteUsuario(@RequestBody Long id){
+    @DeleteMapping(path = "/usuario/{id}")
+    public ResponseEntity deleteUsuario(@PathVariable Long id){
         usuarioService.deleteUsuario(id);
         return ResponseEntity.ok("Usuario deletado");
     }
@@ -60,10 +57,8 @@ public class Controller {
     public ResponseEntity updateUsuario(@RequestBody Usuario usuario){
         Usuario userUpdated = usuarioService.updateUsuario(usuario);
         if(userUpdated == null){
-            LOGGER.info("Estou aqui");
             return new ResponseEntity<Usuario>(new Usuario(), HttpStatus.BAD_REQUEST);
         }
-        LOGGER.info(userUpdated.toString());
         return ResponseEntity.ok(userUpdated.getCPF());
     }
 
@@ -87,7 +82,6 @@ public class Controller {
         Produto produtoUpdated = produtoService.updateProduto(produto);
         if(produtoUpdated == null)
             return ResponseEntity.badRequest().body("Id inválido");
-        LOGGER.info("Estou aqui");
         return ResponseEntity.ok(produtoUpdated);
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.proj.loja.exceptions.ProdutoNotFoundException;
 import com.proj.loja.model.Produto;
 import com.proj.loja.repository.ProdutoRepository;
 
@@ -16,7 +17,7 @@ public class ProdutoServiceImpl implements ProdutoService{
 
     @Override
     public Produto getProdutoById(long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(() -> new ProdutoNotFoundException("Produto de id " + id + " não encontrado"));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class ProdutoServiceImpl implements ProdutoService{
 
     @Override
     public Produto updateProduto(Produto produtoUpdated){
-        Produto prod = repository.findById(produtoUpdated.getId()).orElse(null);
+        Produto prod = repository.findById(produtoUpdated.getId()).orElseThrow(() -> new ProdutoNotFoundException("Produto de id " + produtoUpdated.getId() + " não encontrado"));
         if(prod == null)
             return null;
         prod.setName(produtoUpdated.getName());

@@ -54,11 +54,17 @@ public interface UsuarioService {
     public boolean isEmailInUseOrInvalid(String email);
 
     /**
-     * Update an already existing usuario in the databse, checking if the email and cpf is valid
-     * @param usuario
-     * @return
+     * Update an already existing usuario in the databse, checking if the email and cpf is valid and not in use by another usuario
+     * if's not then returns null
+     * @param usuario the usuario to be updated in the databse, it's only updated with a valid cpf and email
+     * @return the updated usuario in the databse or null if it's invallid
      */
     public Usuario updateUsuario(Usuario usuario);
 
+    /**
+     * Hashes given string and insert it in the usuario, only alters (if has any) the hash of the usuario and the password
+     * @param usuario the usuario to have the password to be hashed, each time is given a unique hash to it
+     */
+    //To do: colocar um sistema melhor de hashing
     public void hashSenha(Usuario usuario);
 }
