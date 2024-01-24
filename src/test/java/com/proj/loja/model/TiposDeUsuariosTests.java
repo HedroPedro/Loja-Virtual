@@ -7,7 +7,7 @@ public class TiposDeUsuariosTests {
     
     @Test
     public void createATipoUsuario(){
-        assertEquals(1, TipoUsuario.Visitante.getId());
+        assertEquals(1, TipoUsuario.Vendendor.getId());
     }
 
 }

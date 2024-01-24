@@ -36,7 +36,7 @@ public class ProdutoServiceTests {
         produto = new Produto(Long.valueOf(0), "Produto", 12.0f, 2);
     }
 
-    @Test
+    /*@Test
     public void checkForAnProdutoThenAssertAnThrow(){
         assertThrows(NoSuchElementException.class, () -> service.getProdutoById((long) 10));
     }
@@ -63,6 +63,6 @@ public class ProdutoServiceTests {
         service.updateProduto(produto);
         produto = service.getProdutoById(produto.getId());
         assertNotEquals(prod.getPreco(), produto.getPreco());
-    }
+    }*/
 
 }

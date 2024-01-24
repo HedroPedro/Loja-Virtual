@@ -5,11 +5,12 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.proj.loja.exceptions.InvalidUsuarioException;
 import com.proj.loja.exceptions.UsuarioNotFoundException;
 import com.proj.loja.model.Usuario;
 import com.proj.loja.repository.UsuarioRepository;
@@ -25,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Autowired
     private MessageDigest md;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    //private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Override
     public List<Usuario> getUsuarios(){
@@ -39,9 +40,13 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     @Override
     public Usuario addUsuario(Usuario usuario) {
-        if(!isCPFCorreto(usuario.getCPF()) || isCPFInUse(usuario.getCPF())
-        || isEmailInUseOrInvalid(usuario.getEmail()))
-            return null;
+        if(!isCPFCorreto(usuario.getCPF()) || isCPFInUse(usuario.getCPF()))
+            throw new InvalidUsuarioException("CPF invalido ou em uso");
+
+        if(isEmailInUse(usuario.getEmail()) || isEmailInvalid(usuario.getEmail()))
+            throw new InvalidUsuarioException("Email invalido ou em uso");
+
+        
         hashSenha(usuario);
         Usuario usuarioSaved = repository.save(usuario);
         return usuarioSaved;
@@ -54,7 +59,6 @@ public class UsuarioServiceImpl implements UsuarioService{
         for(String s : CPFRecortado){
             CPFFormatado = CPFFormatado + s;
         }
-        LOGGER.info(CPFFormatado);
         int firstNumber = Integer.valueOf(String.valueOf(CPFFormatado.charAt(0)));
         int lastFirstNumber = Integer.parseInt(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-2)));
         int lastSecondNumber = Integer.parseInt(String.valueOf(CPFFormatado.charAt(CPFFormatado.length()-1)));
@@ -99,12 +103,14 @@ public class UsuarioServiceImpl implements UsuarioService{
         return false;
     }
 
+    @Override 
+    public boolean isEmailInUse(String email){
+        return repository.existsByEmail(email);
+    }
+
     @Override
-    public boolean isEmailInUseOrInvalid(String email) {
-        if(repository.existsByEmail(email) || 
-        !email.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")) 
-            return true;
-        return false;
+    public boolean isEmailInvalid(String email){
+        return !email.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
     }
 
     @Override
@@ -117,12 +123,12 @@ public class UsuarioServiceImpl implements UsuarioService{
         Usuario usuarioToBeUpdated = repository.findById(usuario.getId()).orElseThrow(() -> new UsuarioNotFoundException("Usuario de id " + usuario.getId() + " não encontrado"));
         if(!usuarioToBeUpdated.getCPF().equals(usuario.getCPF())){
             if(!isCPFCorreto(usuario.getCPF()) || isCPFInUse(usuario.getCPF()))
-                return null;
+                throw new InvalidUsuarioException("CPF em uso por outro usuario ou invalido");
         }
 
         if(!usuarioToBeUpdated.getEmail().equals(usuario.getEmail())){
-            if(!isEmailInUseOrInvalid(usuario.getEmail()))
-                return null;
+            if(isEmailInvalid(usuario.getEmail()) || isEmailInUse(usuario.getEmail()))
+                throw new InvalidUsuarioException("Email em uso por outro usuario ou invalido");
         }
 
         hashSenha(usuarioToBeUpdated);
@@ -143,6 +149,15 @@ public class UsuarioServiceImpl implements UsuarioService{
         byte[] hashedSenha = md.digest(usuario.getSenha().getBytes(StandardCharsets.UTF_8));
         usuario.setSalt(new String(newSalt));
         usuario.setSenha(new String(hashedSenha));
+    }
+
+    public boolean checkCredentials(String email, String password){
+        if(isEmailInvalid(email))
+            throw new InvalidUsuarioException("Usuario com email invalido");
+        Usuario user = repository.findByEmail(email).orElseThrow(() -> new UsuarioNotFoundException("Usuario não encontrado"));
+        md.update(user.getSalt().getBytes());
+        String hashedSenha = new String(md.digest(password.getBytes(StandardCharsets.UTF_8)));
+        return hashedSenha.equals(user.getSenha());
     }
 
 }

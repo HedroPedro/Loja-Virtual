@@ -45,5 +45,11 @@ public class ProdutoServiceImpl implements ProdutoService{
     public List<Produto> getProdutos(){
         return repository.findAll();
     }
+
+    public void updateProdutoQuantidade(Produto produto) {
+        Produto prodToBeUpdated = repository.findById(produto.getId()).orElseThrow(() -> new ProdutoNotFoundException("Produto de id " + produto.getId() + " nao encontrado"));
+        prodToBeUpdated.setQuantd(prodToBeUpdated.getQuantd() - produto.getQuantd());
+        repository.save(prodToBeUpdated);
+    }
     
 }

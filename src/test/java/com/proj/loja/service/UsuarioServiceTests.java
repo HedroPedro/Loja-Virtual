@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.proj.loja.exceptions.UsuarioNotFoundException;
 import com.proj.loja.model.Usuario;
 import com.proj.loja.repository.UsuarioRepository;
 
@@ -45,7 +47,7 @@ public class UsuarioServiceTests {
 
     @Test
     public void checkForAnUsuairoThenThrowException(){
-        assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(UsuarioNotFoundException.class, () -> {
             usuarioService.getUsuarioById(10);
         });
     }

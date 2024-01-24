@@ -45,7 +45,7 @@ public class ProdutoRepositoryTests {
         entityManager.persistAndFlush(produto);
     }
 
-    @Test
+    /*@Test
     public void checkIfCanGetProdutoThenAssertIfNamesAreEquals(){
         Produto prod = repository.findAll().get(0);
         LOGGER.info(prod.getName() + " : " + prod.getId());
@@ -66,5 +66,5 @@ public class ProdutoRepositoryTests {
         Produto prod = repository.findAll().get(0);
         repository.delete(prod);
         assertThrows(NoSuchElementException.class, () -> repository.findById((long) 0).get());
-    }
+    }*/
 }

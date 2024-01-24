@@ -7,14 +7,11 @@ import lombok.Getter;
 
 @Getter
 public enum TipoUsuario {
-    Visitante(0, "Visitante"),
-    Cliente(1, "Cliente"),
-    Vendendor(2, "Vendendor");
+    Cliente(0, "Cliente"),
+    Vendendor(1, "Vendendor");
     
     @Id
-    @ReadOnlyProperty
     private Integer id;
-    @ReadOnlyProperty
     private String name;
     
     private TipoUsuario(Integer id, String name){
@@ -33,10 +30,8 @@ public enum TipoUsuario {
     public static TipoUsuario fromId(Integer id) {
         switch (id) {
             case 0:
-                return TipoUsuario.Visitante;
-            case 1:
                 return TipoUsuario.Cliente;
-            case 2:
+            case 1:
                 return TipoUsuario.Vendendor;
             default:
                 throw new IllegalArgumentException("Id ["+ id +"] não suportado");
