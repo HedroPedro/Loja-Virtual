@@ -3,6 +3,8 @@ package com.proj.loja.service;
 import java.util.List;
 
 import com.proj.loja.model.Produto;
+import com.proj.loja.model.TipoUsuario;
+import com.proj.loja.model.Usuario;
 
 public interface ProdutoService {
 
@@ -24,7 +26,7 @@ public interface ProdutoService {
      * @param produto The produto to save in the database
      * @return the saved produto
      */
-    public Produto addProduto(Produto produto);
+    public Produto addProduto(Produto produto, Usuario usuario);
     
     /**
      * Delete the produto by its id, if the id is invalid the request is ignored by the repository
@@ -37,5 +39,5 @@ public interface ProdutoService {
      * @param produtoUpdated the produto that will be updated in the database
      * @return the updated produto
      */
-    public Produto updateProduto(Produto produtoUpdated);
+    public Produto updateProduto(Produto produtoUpdated, TipoUsuario tipo);
 }

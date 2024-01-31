@@ -3,6 +3,7 @@ package com.proj.loja.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.proj.loja.exceptions.InvalidUsuarioException;
 import com.proj.loja.exceptions.PedidoNotFoundException;
@@ -10,6 +11,7 @@ import com.proj.loja.model.Pedido;
 import com.proj.loja.model.TipoUsuario;
 import com.proj.loja.repository.PedidoRepository;
 
+@Service
 public class PedidoServiceImpl implements PedidoService{
 
     @Autowired
@@ -22,7 +24,7 @@ public class PedidoServiceImpl implements PedidoService{
 
     @Override
     public List<Pedido> getPedidosByUsuarioId(Long usuarioId){
-        return repository.findAllByUsuarioId(usuarioId);
+        return repository.findByUsuarioId(usuarioId);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class PedidoServiceImpl implements PedidoService{
         pedidoToBeUpdated.setDataEntrega(pedido.getDataEntrega());
         pedidoToBeUpdated.setDataCriação(pedido.getDataCriação());
         pedidoToBeUpdated.setProdutos(pedido.getProdutos());
-        pedidoToBeUpdated.setUsuario(pedido.getUsuario());
+        //pedidoToBeUpdated.setUsuario(pedido.getUsuario());
         return repository.save(pedidoToBeUpdated);
     }
 

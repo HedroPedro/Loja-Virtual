@@ -1,5 +1,6 @@
 package com.proj.loja.service;
 
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import com.proj.loja.model.Usuario;
@@ -75,5 +76,5 @@ public interface UsuarioService {
     //To do: colocar um sistema melhor de hashing
     public void hashSenha(Usuario usuario);
 
-    public boolean checkCredentials(String email, String password);
+    public boolean checkCredentials(String email, String password) throws InvalidKeySpecException;
 }

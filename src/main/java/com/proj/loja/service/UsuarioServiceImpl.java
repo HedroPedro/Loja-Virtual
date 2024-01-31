@@ -157,7 +157,7 @@ public class UsuarioServiceImpl implements UsuarioService{
         Usuario user = repository.findByEmail(email).orElseThrow(() -> new UsuarioNotFoundException("Usuario não encontrado"));
         md.update(user.getSalt().getBytes());
         String hashedSenha = new String(md.digest(password.getBytes(StandardCharsets.UTF_8)));
-        return hashedSenha.equals(user.getSenha());
+        return hashedSenha.matches(user.getSenha());
     }
 
 }

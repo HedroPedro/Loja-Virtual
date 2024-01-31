@@ -9,7 +9,6 @@ import com.proj.loja.model.Pedido;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 
-    @Query("select u from Tb_Pedidos u where u.usuario_id = ?1")
-    List<Pedido> findAllByUsuarioId(Long usuarioId);
+    List<Pedido> findByUsuarioId(Long usuarioId);
     
 }

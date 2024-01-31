@@ -1,12 +1,14 @@
 package com.proj.loja.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.proj.loja.exceptions.InvalidUsuarioException;
 import com.proj.loja.exceptions.ProdutoNotFoundException;
 import com.proj.loja.model.Produto;
+import com.proj.loja.model.TipoUsuario;
+import com.proj.loja.model.Usuario;
 import com.proj.loja.repository.ProdutoRepository;
 
 @Service
@@ -21,7 +23,9 @@ public class ProdutoServiceImpl implements ProdutoService{
     }
 
     @Override
-    public Produto addProduto(Produto produto) {
+    public Produto addProduto(Produto produto, Usuario usuario){
+        if(!usuario.getTipoUsuario().equals(TipoUsuario.Vendendor))
+            throw new InvalidUsuarioException("Usuario com nível de segurança errado");
         return repository.save(produto);
     }
 
@@ -31,7 +35,9 @@ public class ProdutoServiceImpl implements ProdutoService{
     }
 
     @Override
-    public Produto updateProduto(Produto produtoUpdated){
+    public Produto updateProduto(Produto produtoUpdated, TipoUsuario tipo){
+        if(tipo.equals(TipoUsuario.Vendendor))
+            throw new InvalidUsuarioException("Usuario nao vendendor");
         Produto prod = repository.findById(produtoUpdated.getId()).orElseThrow(() -> new ProdutoNotFoundException("Produto de id " + produtoUpdated.getId() + " não encontrado"));
         if(prod == null)
             return null;

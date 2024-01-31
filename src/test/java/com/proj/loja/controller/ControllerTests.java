@@ -117,9 +117,9 @@ public class ControllerTests {
 
     @Test
     public void whenCreatingAProdutoAssertItsName(){
-        when(produtoServiceImpl.addProduto(any(Produto.class))).thenReturn(produto);
+        when(produtoServiceImpl.addProduto(any(Produto.class), any(Usuario.class))).thenReturn(produto);
         try{
-            mockMvc.perform(post("/produto").content(mapper.writeValueAsString(produto))
+            mockMvc.perform(post("/produto").content(mapper.writeValueAsString(produto)).content(mapper.writeValueAsString(user))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk()).andExpect(jsonPath("$.name").value("Produto"));
         }catch(Exception e){
@@ -130,7 +130,7 @@ public class ControllerTests {
     @Test
     public void whenUpdatingAProdutoAssertItsPreco(){
         produto.setPreco(18f);
-        when(produtoServiceImpl.updateProduto(any(Produto.class))).thenReturn(produto);
+        when(produtoServiceImpl.updateProduto(any(Produto.class), any(TipoUsuario.class))).thenReturn(produto);
         try {
             mockMvc.perform(patch("/produto").content(mapper.writeValueAsString(produto))
             .contentType(MediaType.APPLICATION_JSON))

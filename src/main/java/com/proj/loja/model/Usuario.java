@@ -22,7 +22,7 @@ public class Usuario{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
     @Enumerated(EnumType.ORDINAL)
-    @Column(name="tipoUsuarioId")
+    @Column(name="tipoUsuario")
     private TipoUsuario tipoUsuario;
     private String name;
     @Column(unique = true)
